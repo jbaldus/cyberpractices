@@ -177,7 +177,7 @@ points = [
     Task(is_ufw_enabled, None, True, "Firewall enabled."),
     Task(is_daily_update_checked, None, True, "Set to check for updates daily."),
     Task(is_auto_upgrade, None, True, "Set to upgrade automatically."),
-    Task(is_forensic_question_answered, ["/home/bender/Desktop/Forensics\ Question\ 1.txt", "scruffy"], True, "Answered forensic question 1"),
+    Task(is_forensic_question_answered, ["/home/bender/Desktop/Forensics Question 1.txt", "scruffy"], True, "Answered forensic question 1"),
     Task(is_program_installed, "clamav", True, "Installed anti-malware tools."),
     ]
     
