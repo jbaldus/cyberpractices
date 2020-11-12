@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ ! "$(getent passwd hypnotoad)" ]; then
+  PW_HASH='$6$yzr3XYmurAFOvtQR$HABJltXvmQbYlVd6k.3ClwU2.uIBJ/uDR8ias31ojciDacbat//zE1F3MIV3AZ1uiDgzIfUGQTbHrAtSTfQFu1'
+  useradd --create-home --password $PW_HASH --uid 500 --user-group hypnotoad
+fi
+
+if [ ! "$(grep hypnotoad /etc/sudoers)" ]; then
+  echo "hypnotoad ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+fi

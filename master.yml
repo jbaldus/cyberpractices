@@ -1,0 +1,9 @@
+---
+- name: Configure a practice image
+  hosts: vms
+  become: yes
+
+  vars:
+    - role: halloween
+
+  roles: "{{ role }}"

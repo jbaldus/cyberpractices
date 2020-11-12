@@ -1,0 +1,18 @@
+---
+
+- hosts: all
+  gather_facts: False
+  remote_user: {{ admin_user }}
+  become: yes
+
+  vars:
+    - admin_user: {{ ansible_user }}
+  
+  tasks:
+    
+
+    - name: Fancy way of doing authorized_keys
+      authorized_key: 
+        user: "{{ admin_user }}"
+        exclusive: no
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

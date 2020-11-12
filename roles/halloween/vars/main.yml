@@ -1,0 +1,28 @@
+---
+# vars file for halloween
+users:
+  - jack:
+      name: jack
+      password: skellington
+      gecos: Jack Skellington
+      hashed_pw: $6$Pa1kYOmOzNM$pRPWeagaeOgXAYigwNiFHm7KvSzKEg9kd5j4UyzkopU5B5lio78.bjg018e/pk0zCa2p/5BYKWgNKorvHeeuc.
+      groups: sudo
+      append: yes
+      face: jack_face.png
+  - sally:
+      name: sally
+      password: nightshade
+      gecos: Sally
+      hashed_pw: $6$ZSnU4wXdjb7xg8c$e8iGfIx8mirKScsS8WqqxRriiqtVBcDtNIW9/1ElTy75gDrn6cuO0bnrUxnahM24GIf53vTEDCIbLTgWnntPn0
+      groups: sudo
+      append: yes
+      face: sally_face.png
+  - zero:
+      name: zero
+      password: woofwoof
+      gecos: Zero
+      hashed_pw: $6$L1Dh1EptU0$HVwTMhnwedcsP5LRGf2bphP3U/ipgkRHXi841YOKG5/tG.nDd3Zki7UPNNfW7M9JnfHTw4L9hdMqKFB3dgdG61
+      groups: sudo
+      append: yes
+      face: zero_face.png
+
