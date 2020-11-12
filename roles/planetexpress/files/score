@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-echo 'IyEvYmluL2Jhc2gKc3VkbyBweXRob24gL29wdC9TY29yaW5nRW5naW5lL3Njb3JlLnB5Cg==' | base64 -d | sh
+echo 'IyEvYmluL2Jhc2gKc3VkbyBweXRob24zIC9vcHQvU2NvcmluZ0VuZ2luZS9zY29yZS5weQo=' | base64 -d | sh
