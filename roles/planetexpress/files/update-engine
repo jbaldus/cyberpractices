@@ -1,0 +1,3 @@
+#!/bin/bash
+SCORE_PATH=/opt/ScoringEngine/score.py
+sudo wget https://raw.githubusercontent.com/jbaldus/cyberpractices/main/roles/planetexpress/files/score.py -O "$SCORE_PATH"

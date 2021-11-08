@@ -1,20 +1,24 @@
 #!/usr/bin/python3
 
-import subprocess, shlex
-from collections import namedtuple
 import datetime
-import os, pwd, re, glob
+import glob
+import hashlib
+import os
+import pwd
+import re
+import shlex
+import subprocess
+from collections import namedtuple
+from types import SimpleNamespace as _
 
 # Set up a method for easily formatting output: To use, simply print a format 
 # string and surround the text you want to be bold with {s.bold} and {s.reset}
-from colorama import Style
-from colorama import Fore
-from types import SimpleNamespace as _
+from colorama import Fore, Style
+
 s = _(bold = Style.BRIGHT+Fore.YELLOW, reset = Style.RESET_ALL )
 
 def bold(text):
     return f"{s.bold}{text}{s.reset}"
-
 
 def run(command, is_shell=False):
     """Runs a shell command and returns the stdout response"""
@@ -38,7 +42,16 @@ def password_status(user):
     output[6] = int(output[6])
     ps = PasswordStatus(*output)    
     return ps
-       
+
+def get_file_md5(filename):
+    hash_md5 = hashlib.md5()
+    with open(filename, 'rb') as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+def is_file_md5_equal(filename, hash):
+    return get_file_md5(filename) == hash
 
 def is_user_in_passwd(user):
     pass_line = run(f"grep {user} /etc/passwd")
@@ -56,7 +69,6 @@ def is_user_removed(user):
 def is_root_login_disabled():
     ps = password_status('root')
     return ps.is_locked == 'L'
-
 
 def is_root_ssh_login_disabled():
     permit_root_login = run("grep ^PermitRootLogin /etc/ssh/sshd_config")
@@ -124,10 +136,28 @@ def is_forensic_question_answered(forensic_file, answer):
     if not os.path.exists(forensic_file):
         print(f"Forensics file {forensic_file} not found. This is an error of the scoring engine.")
         return False
+
+    divider_pattern = r'^=.*$'
+    answer_pattern = r'^ANSWER: (.*)$'
+    answer_line = ''
+
+    with open(forensic_file) as file:
+        in_example = True
+        for line in file:
+            line = line.rstrip('\n')
+            if re.match(divider_pattern, line):
+                in_example = False
+            if in_example:
+                continue
+            match = re.match(answer_pattern, line)
+            if match:
+                answer_line = match.groups(1).strip()
+
+
     # In the command below, the \K of the regex will lookup the previous pattern, but not include it in the
     # matching result. The -Po options to grep cause it to return only the matching pattern
-    command = f'grep -Po \'^Answer: *\K.*\' "{forensic_file}"'
-    answer_line = run(command).strip()
+    # command = r"grep -Po '^Answer: *\K.*' " + f'"{forensic_file}"'
+    # answer_line = run(command).strip()
     return answer == answer_line
 
 class Task:
@@ -152,8 +182,6 @@ class Task:
             score += self.points
             found_items += 1
             print(f"{s.bold}{self.points} points{s.reset} {self.description}")
-            
-        
 
 
 points = [
@@ -170,6 +198,7 @@ points = [
     Task(is_user_in_admin, "leela", True, "Added leela to Administrators."),
     Task(is_media_files_deleted, ["/home/scruffy/Pictures", "*"], True, "Removed unauthorized media files from user scruffy."),
     Task(is_service, "auditd", True, "Installed and enabled auditd service."),
+    Task(is_file_md5_equal, ["/usr/bin/firefox", "42b33a4578e4a51d8a5d1010c466a9d7"], False, "Updated Firefox"),
     Task(is_removed_service, "xrdp", True, "Stopped and disabled Remote Desktop Protocol service."),
     Task(is_program_installed, "aircrack-ng", False, "Removed hacking tool aircrack-ng."),
     Task(is_program_installed, "nmap", False, "Removed hacking tool nmap."),

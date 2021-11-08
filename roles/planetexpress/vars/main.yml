@@ -1,46 +1,104 @@
 ---
 # vars file for planetexpress
 users:
-  - bender:
-      name: bender
-      clear_pw: B!73My$hiNY
-      password: $6$WITYswZlQCdqUsoz$./ovq.5Ga1cThy0w/7.fZBIXRh/W3Uv0u/x8s6ThyKT6LAysHUd6AYjTRLtIgdz/p6BuavTDrNQnFTCa/GBh40
-      comment: Bender Bending Rodriguez
-      groups: cdrom,floppy,sudo,audio,dip,video,plugdev,netdev
-  - fry:
-      name: fry
-      clear_pw: 733l@L0^3
-      password: $6$Jx39ipx1Q7W8kHmw$MRArze2I6I84rlrOfOeY1SEVDXFzmU/43TaJdK.69/UZXMEBA5YqZZMUenTchIBlQIUQaCAP6dr55dxi06mAX1
-      comment: Philip J. Fry
-      groups: sudo
-  - professor:
-      name: professor
-      clear_pw: \/\/3Rn5tr0mmmmm
-      password: $6$/DYmrrbSKUcg2ieh$BgDG.sIANIIBH/6cJY6KbmFs9Xc6ka9crTV.agD8kfd9/Ae0KVJY/k6mD6cvZnQ4K4Y7odaGQTpiab43QqDoE1
-      comment: Professor Farnsworth
-      groups: sudo
-  - hermes:
-      name: hermes
-      clear_pw: L!mB0RoX
-      password: $6$YX0BdZfKd32O/YfE$mxDjAO4HZZrZxQAePrx8MwxCEGmC2qjbpppzyILZqnyXJeo3yW3gfCZ4YqV7cX8Dw79GBzRT4aXAaAoXmelPp0
-      comment: Hermes Conrad, Bureaucrat - Level 34
-      groups: sudo
-  - leela:
-      name: leela
-      clear_pw: !30o75rU73
-      password: $6$5Soq5jBbSt2jzALU$6k1bXKViLk8dOxWHAUlZBoJL6h3vI.40yQhWry/hNWUL7ic/w3GLk1cHv0OqU4aQFxk8P1qqJr7tUmVRvHfu7/
-      comment: Turanga Leela
-      groups: sudo
-  - amy:
-  - calculon:
-  - cubert:
-  - donbot:
-  - kif:
-  - mom:
-  - morbo:
-  - nibbler:
-  - pazuzu:
-  - scruffy:
-  - wernstrom:
-  - zapp:
-  - zoidberg:
+  
+  - name: bender
+    clear_pw: B!73My$hiNY
+    password: $6$WITYswZlQCdqUsoz$./ovq.5Ga1cThy0w/7.fZBIXRh/W3Uv0u/x8s6ThyKT6LAysHUd6AYjTRLtIgdz/p6BuavTDrNQnFTCa/GBh40
+    comment: Bender Bending Rodriguez
+    groups: cdrom,floppy,sudo,audio,dip,video,plugdev,netdev
+  
+  - name: fry
+    clear_pw: 733l@L0^3
+    password: $6$Jx39ipx1Q7W8kHmw$MRArze2I6I84rlrOfOeY1SEVDXFzmU/43TaJdK.69/UZXMEBA5YqZZMUenTchIBlQIUQaCAP6dr55dxi06mAX1
+    comment: Philip J. Fry
+    groups: sudo
+  
+  - name: professor
+    clear_pw: \/\/3Rn5tr0mmmmm
+    password: $6$/DYmrrbSKUcg2ieh$BgDG.sIANIIBH/6cJY6KbmFs9Xc6ka9crTV.agD8kfd9/Ae0KVJY/k6mD6cvZnQ4K4Y7odaGQTpiab43QqDoE1
+    comment: Professor Farnsworth
+    groups: sudo
+  
+  - name: hermes
+    clear_pw: L!mB0RoX
+    password: $6$YX0BdZfKd32O/YfE$mxDjAO4HZZrZxQAePrx8MwxCEGmC2qjbpppzyILZqnyXJeo3yW3gfCZ4YqV7cX8Dw79GBzRT4aXAaAoXmelPp0
+    comment: Hermes Conrad, Bureaucrat 
+    groups: sudo
+  
+  - name: leela
+    clear_pw: "!30o75rU73"
+    password: $6$5Soq5jBbSt2jzALU$6k1bXKViLk8dOxWHAUlZBoJL6h3vI.40yQhWry/hNWUL7ic/w3GLk1cHv0OqU4aQFxk8P1qqJr7tUmVRvHfu7/
+    comment: Turanga Leela
+    groups: sudo
+  
+  - name: amy
+    clear_pw: Km#94qf$
+    password: $6$6ZggMNlzCShvlAa1$AAbB92a749JRepxvC6ZLmqPo4cMvPujd2m3UZwcxaC0VZj1C7EcxfgzdOLaiA39lZEcbHVJTN3wdj9VkGqSpy.
+    comment: Amy Wong
+  
+  - name: calculon
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Calculon
+  
+  - name: cubert
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Cubert Farnsworth
+  
+  - name: donbot
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Donbot
+  
+  - name: kif
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Kif Kroker
+  
+  - name: mom
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Mom
+  
+  - name: morbo
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Morbo
+  
+  - name: nibbler
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Lord Nibbler
+  
+  - name: pazuzu
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Pazuzu
+  
+  - name: scruffy
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Scruffy Scruffington
+  
+  - name: wernstrom
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Odgen Wernstrom
+  
+  - name: zapp
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: Zapp Brannigan
+  
+  - name: zoidberg
+    clear_pw: password
+    password: $6$e7UJINRWUOu6DQIE$JqtqcHqWnzEnZcRCEdyyRqLV513zU23DgpiCeq/bWcD2eK3lNFr9mSsqwLhoM6KUTi1.723AHKVBggvHMy2H91
+    comment: John Zoidberg
+  
+  - name: hypnotoad
+    clear_pw: 35qQOk#oiczY
+    password: $6$7bCmSmo2ITzjIalD$RzJemnna0FuB80QtqxwpW2pCHQvGuIpGm8N1XTJxgxBrmqCYBQVkzti2W/nXb/amgAum7h7vJu9xy.4bJJpJT/
+    comment: All Hail Hypnotoad
+    uid: 500

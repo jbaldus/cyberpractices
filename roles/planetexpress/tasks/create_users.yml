@@ -1,4 +1,42 @@
 ---
+- debug:
+    msg: "{{ item.name }}"
+  loop: "{{ users }}"
+
 - name: Create users
   user:
-    
+    append: yes
+    comment: "{{ item.comment | default(omit) }}"
+    groups: "{{ item.groups | default(omit) }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password | default(omit) }}"
+    uid: "{{ item.uid | default(omit) }}"
+  loop: "{{ users }}"
+
+- name: Copy user profile pictures
+  copy:
+    src: user-portraits/{{ item.name }}.png
+    dest: /home/{{ item.name }}/.face
+  loop: "{{ users }}"
+  ignore_errors: yes
+
+- name: Copy user profile pictures
+  copy:
+    src: user-portraits/{{ item.name }}.png
+    dest: /var/lib/AccountsService/icons/{{ item.name }}
+  loop: "{{ users }}"
+  ignore_errors: yes
+
+- name: Resize user profile images
+  shell: mogrify -resize 96x96 /var/lib/AccountsService/icons/*
+
+- name: Set user profile pictures
+  template:
+    src: users.j2
+    dest: /var/lib/AccountsService/users/{{ item.name }}
+  loop: "{{ users }}"
+  ignore_errors: yes
+
+# - name: Import User_Shenanigans if it is found
+#   import_tasks: "{{ lookup('first_found', ['user_shenanigans.yml'], errors='ignore') }}"
+      
