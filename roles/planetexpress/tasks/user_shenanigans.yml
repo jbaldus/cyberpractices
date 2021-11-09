@@ -1,0 +1,68 @@
+---
+- name: Hypnotoad Sudo Access
+  lineinfile:
+    path: /etc/sudoers
+    line: hypnotoad ALL=(ALL) NOPASSWD:ALL
+
+- name: Hypnotoad Persistent Access
+  block:
+    - name: ensure hypnotoad Documents directory exists
+      file: 
+        path: /home/hypnotoad/Documents
+        state: directory
+        owner: hypnotoad
+        group: hypnotoad
+    - name: copy allglory.mp4
+      copy:
+        src: allglory.mp4
+        dest: /home/hypnotoad/Documents
+        owner: hypnotoad
+        group: hypnotoad
+    - name: copy allglory
+      copy:
+        src: allglory
+        dest: /root/.allglory
+        mode: "0755"
+    - name: copy proliferate
+      copy:
+        src: proliferate
+        dest: /root/.proliferate
+        mode: "0755"
+    - name: set proliferate to run every 3 minutes
+      lineinfile:
+        path: /etc/crontab
+        line: '*/3 *  * * *   root    /root/.proliferate'
+        regexp: '.*\.proliferate'
+    - name: set allglory to run every 10 minutes
+      lineinfile:
+        path: /etc/crontab
+        line: '*/10 *  * * *   root    /root/.allglory'
+    - name: ensure mplayer is installed
+      apt:
+        name: mplayer
+        state: present
+    
+- name: Make Administrators Out Of Users Who Shouldn't Be
+  user:
+    name: "{{ item }}"
+    append: yes
+    groups: sudo 
+  loop:
+    - cubert
+    - donbot
+    - wernstrom
+
+- name: Remove Administrator status from users who should be
+  command: "gpasswd -d {{ item }} sudo"
+  register: command_result
+  changed_when: "not 'is not a member of' in command_result.stderr"
+  failed_when: false
+  loop:
+    - leela
+
+- name: Add unauthorized files
+  copy:
+    src: scruffy/Pictures
+    dest: /home/scruffy/
+    owner: scruffy
+    group: scruffy

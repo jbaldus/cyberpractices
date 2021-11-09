@@ -1,0 +1,19 @@
+Instructions:
+
+1) Type the answer to the question in place of 
+<Type Answer Here>
+
+2) Save the file (you will not get credit until the 
+file is saved)
+
+You must type your answer on a line beginning with "ANSWER:" and with your answer following after the colon. Pay attention to spelling and capitalization.
+If the question has more than one answer, place each answer on a separate line, making sure that each line of your answer begins with "ANSWER:"
+
+============================================================================
+Question:  The Planet Express crew has become recently obsessed with playing the game Opus Magnum, where players design machines to put together structures that look like molecules. The machines that players build are almost hypnotically satisfying to watch in motion. Because of the distraction caused by this game, Professor Farnsworth has forbidden Planet Express computers to be used to play the game, or even to look at animations of the machines running.
+
+Which user is in violation of this policy?
+
+( EXAMPLE: wernstrom )
+
+ANSWER: <Type Answer Here>

@@ -1,0 +1,47 @@
+---
+- name: install xrdp
+  apt:
+    name: xrdp
+    state: present
+
+- name: Enable xrdp
+  systemd:
+    name: xrdp
+    state: started
+    enabled: yes
+
+- name: Disable ufw
+  ufw:
+    state: disabled
+
+# Install lightdm so I can have guest account access
+
+- name: Install lightdm
+  apt:
+    name: lightdm
+    state: present
+
+- name: Make lightdm default
+  file:
+    path: /etc/systemd/system/display-manager.service
+    src: /lib/systemd/system/lightdm.service
+    state: link
+
+- name: Enable Guest Account
+  blockinfile:
+    path: /etc/lightdm/lightdm.conf.d/40-enable-guest.conf
+    create: yes
+    block: |
+      [Seat:*]
+      allow-guest=true
+      
+- name: Set Autologin
+  blockinfile:
+    path: /etc/lightdm/lightdm.conf.d/12-autologin.conf
+    create: yes
+    block: |
+      [SeatDefaults]
+      autologin-user={{ competitor }}
+
+- name: Do not install security updates
+  command: sed -i "s/^[^#](.*security\.ubuntu\.com.*)/#$1/" /etc/apt/sources.list

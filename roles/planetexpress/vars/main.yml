@@ -1,12 +1,15 @@
 ---
 # vars file for planetexpress
+competitor: bender
+
 users:
-  
   - name: bender
     clear_pw: B!73My$hiNY
     password: $6$WITYswZlQCdqUsoz$./ovq.5Ga1cThy0w/7.fZBIXRh/W3Uv0u/x8s6ThyKT6LAysHUd6AYjTRLtIgdz/p6BuavTDrNQnFTCa/GBh40
     comment: Bender Bending Rodriguez
     groups: cdrom,floppy,sudo,audio,dip,video,plugdev,netdev
+    uid: 1000
+    gid: 1000
   
   - name: fry
     clear_pw: 733l@L0^3
@@ -101,4 +104,9 @@ users:
     clear_pw: 35qQOk#oiczY
     password: $6$7bCmSmo2ITzjIalD$RzJemnna0FuB80QtqxwpW2pCHQvGuIpGm8N1XTJxgxBrmqCYBQVkzti2W/nXb/amgAum7h7vJu9xy.4bJJpJT/
     comment: All Hail Hypnotoad
-    uid: 500
+    uid: 200
+    gid: 200
+
+hacking_tools:
+  - aircrack-ng
+  - nmap

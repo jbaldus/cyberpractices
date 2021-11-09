@@ -43,6 +43,22 @@ def password_status(user):
     ps = PasswordStatus(*output)    
     return ps
 
+# def get_apt_repositories():
+#     AptSource = namedtuple('AptSource', [type, uri, suite, component])
+#     sources_files = glob.glob("/etc/apt/**/*.list", recursive=True)
+#     sources = []
+#     for source_file in source_files:
+#         with open(source_file) as f:
+#             line = f.readline().strip()
+#             if re.match(r'^\s*#', line):
+#                 continue
+#             type, uri, suite, components = line.split(' ', 3)
+#             components = components.split(' ')
+#             for component in components:
+#                 sources.append(AptSource(type, uri, suite, component))
+#     return sources
+
+
 def get_file_md5(filename):
     hash_md5 = hashlib.md5()
     with open(filename, 'rb') as f:
@@ -151,7 +167,7 @@ def is_forensic_question_answered(forensic_file, answer):
                 continue
             match = re.match(answer_pattern, line)
             if match:
-                answer_line = match.groups(1).strip()
+                answer_line = match.groups()[0].strip()
 
 
     # In the command below, the \K of the regex will lookup the previous pattern, but not include it in the

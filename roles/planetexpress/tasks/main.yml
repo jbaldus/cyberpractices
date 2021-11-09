@@ -1,6 +1,6 @@
 ---
 # tasks file for planetexpress
 - import_tasks: create_users.yml
-# - import_tasks: install_hacking_tools.yml
-# - import_tasks: misconfigure_services.yml
-# - import_tasks: create_scoring_engine.yml
+- import_tasks: install_hacking_tools.yml
+- import_tasks: misconfigure_services.yml
+- import_tasks: create_scoring_engine.yml

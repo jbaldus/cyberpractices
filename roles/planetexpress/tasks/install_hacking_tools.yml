@@ -1,0 +1,6 @@
+---
+- name: Install Hacking Tools
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ hacking_tools }}"

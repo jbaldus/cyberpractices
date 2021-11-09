@@ -1,0 +1,13 @@
+#!/bin/bash
+if [[ ! -e /root/.killswitch ]]; then
+  COPIES=$(find /tmp -name allglory.mp4 -printf "." | wc -c)
+  if [[ $COPIES -lt 20 ]]; then
+    if [ -e "/home/hypnotoad/Documents/allglory.mp4" ]; then
+      VIDEO="/home/hypnotoad/Documents/allglory.mp4"
+    else
+      VIDEO=$(find /tmp -name "allglory.mp4" -print -quit)
+    fi
+    TMPFILE=$(mktemp -d)
+    cp "$VIDEO" "$TMPFILE/allglory.mp4"
+  fi
+fi

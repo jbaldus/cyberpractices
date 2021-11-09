@@ -3,6 +3,22 @@
     msg: "{{ item.name }}"
   loop: "{{ users }}"
 
+- name: Make Competitor the Main User
+  block:
+    - name: rename architect to {{ competitor }}
+      command: usermod -l {{ competitor }} architect
+    - name: set {{ competitor }}'s home directory
+      command: usermod -d /home/{{ competitor }} {{ competitor }}
+    - name: rename {{ competitor }}'s primary group
+      command: groupmod -n {{ competitor }} architect
+    - name: fix some configuration files
+      command: sed -i 's/architect/{{ competitor }}/' {{ item }}
+      loop:
+        - /etc/subuid
+        - /etc/subgid
+        - /etc/gdm3/custom.conf
+      failed_when: False
+
 - name: Create users
   user:
     append: yes
@@ -27,6 +43,11 @@
   loop: "{{ users }}"
   ignore_errors: yes
 
+- name: Install ImageMagick
+  apt: 
+    name: imagemagick
+    state: present
+
 - name: Resize user profile images
   shell: mogrify -resize 96x96 /var/lib/AccountsService/icons/*
 
@@ -37,6 +58,13 @@
   loop: "{{ users }}"
   ignore_errors: yes
 
-# - name: Import User_Shenanigans if it is found
-#   import_tasks: "{{ lookup('first_found', ['user_shenanigans.yml'], errors='ignore') }}"
+- name: Import User_Shenanigans if it is found
+  include_tasks: 
+    file: "{{ lookup('first_found', ['user_shenanigans.yml'], errors='ignore') }}"
       
+- name: Copy Background
+  copy:
+    src: background.jpg
+    dest: /home/{{ competitor }}/.background.jpg
+    owner: "{{ competitor }}"
+    group: "{{ competitor }}"

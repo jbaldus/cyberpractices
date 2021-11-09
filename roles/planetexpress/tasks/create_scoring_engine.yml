@@ -1,0 +1,45 @@
+---
+- name: Create ScoringEngine Directory
+  file:
+    path: /opt/ScoringEngine
+    state: directory
+
+- name: Copy Scoring script
+  copy:
+    src: score.py
+    dest: /opt/ScoringEngine
+
+- name: Copy score command
+  copy:
+    src: score
+    dest: /usr/bin
+    mode: "0755"
+
+- name: Copy Updater for On The Fly Updates
+  copy:
+    src: update-engine
+    dest: /usr/bin
+    mode: "0755"
+
+- name: Ensure competitor Desktop directory works
+  file:
+    path: /home/{{ competitor }}/Desktop
+    state: directory
+    owner: "{{ competitor }}"
+    group: "{{ competitor }}"
+
+- name: Copy README file
+  copy:
+    src: README.txt
+    dest: /home/{{ competitor }}/Desktop
+    owner: "{{ competitor }}"
+    group: "{{ competitor }}"
+
+- name: Copy Forensics Questions
+  copy:
+    src: "{{ item }}"
+    dest: /home/{{ competitor }}/Desktop
+    owner: "{{ competitor }}"
+    group: "{{ competitor }}"
+  loop:
+    - Forensics Question 1.txt
