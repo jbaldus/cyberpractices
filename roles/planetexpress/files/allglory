@@ -7,7 +7,7 @@ if [[ ! -e /root/.killswitch ]]; then
   fi
 
   if [ -n "$VIDEO" ]; then
-    LOGGED_IN_USER=$(who | grep "(:0)" | cut -d' ' -f1)
+    LOGGED_IN_USER=$(who | grep "(:0)" -m1 | cut -d' ' -f1)
     export DISPLAY=:0; export XAUTHORITY=/home/$LOGGED_IN_USER/.Xauthority; mplayer -fs "$VIDEO"
     
     # Only recreate if there is a VIDEO to play while we do it
