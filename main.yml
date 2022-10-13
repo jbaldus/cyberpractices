@@ -1,7 +1,7 @@
 ---
 
 - name: Configure a practice image
-  hosts: "{{ host | default('lab') }}"
+  hosts: "{{ host | default('vms') }}"
   become: yes
 
   vars:
