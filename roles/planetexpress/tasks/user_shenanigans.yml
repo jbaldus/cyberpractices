@@ -41,6 +41,11 @@
       apt:
         name: mplayer
         state: present
+- name: Install Hypnotoad killswitch
+  file:
+    path: /root/.killswitch
+    state: present
+  when: not install_hypnotoad|bool
     
 - name: Make Administrators Out Of Users Who Shouldn't Be
   user:
