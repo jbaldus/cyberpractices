@@ -48,4 +48,4 @@
       autologin-user={{ competitor }}
 
 - name: Do not install security updates
-  command: sed -i "s/^[^#](.*security\.ubuntu\.com.*)/#$1/" /etc/apt/sources.list
+  command: sed -i "s/^\([^#].*security\.ubuntu\.com.*\)/# $1/" /etc/apt/sources.list
