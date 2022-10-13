@@ -22,10 +22,14 @@
     state: present
 
 - name: Make lightdm default
-  file:
-    path: /etc/systemd/system/display-manager.service
-    src: /lib/systemd/system/lightdm.service
-    state: link
+  block:
+    - name: Create SystemD Link
+      file:
+        path: /etc/systemd/system/display-manager.service
+        src: /lib/systemd/system/lightdm.service
+        state: link
+    - name: Set lightdm in /etc/X11/default-display-manager
+      shell: bash -c "echo $(which lightdm) > /etc/X11/default-display-manager"
 
 - name: Enable Guest Account
   blockinfile:
