@@ -55,4 +55,6 @@ d-i grub-installer/bootdev string /dev/sda
 ubiquity ubiquity/success_command string\
     in-target bash -c "apt-get install openssh-server"\
     in-target bash -c "sed -i 's/^.*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config"\
-    in-target bash -c "systemctl restart ssh"
+    in-target bash -c "systemctl restart ssh"\
+    in-target bash -c "apt-get install ansible-core"\
+    in-target bash -c "#ansible-pull #Figure out how to do this"

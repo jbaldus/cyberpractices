@@ -1,0 +1,12 @@
+---
+
+- name: Configure a practice image
+  hosts: localhost
+
+  vars:
+    - role: planetexpress
+
+  tasks:
+    - name: Include role {{ role }}
+      include_role:
+        name: "{{ role }}"
