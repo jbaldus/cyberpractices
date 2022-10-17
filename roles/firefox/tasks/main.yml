@@ -1,0 +1,23 @@
+---
+- name: Remove snap version of Firefox
+  snap:
+    name: firefox
+    state: absent
+
+- name: Add Mozillateam Repository
+  command: add-apt-repository -y ppa:mozillateam/ppa
+
+- name: Prioritize the DEB version over the Snap version
+  copy:
+    src: mozilla-firefox
+    dest: /etc/apt/preferences.d/mozilla-firefox
+    
+- name: Allow unattended upgrades to use the ppa
+  copy:
+    src: 51unattended-upgrades-firefox
+    dest: /etc/apt/apt.conf.d/51unattended-upgrades
+
+- name: Install Firefox
+  apt:
+    name: firefox
+    update_cache: yes
