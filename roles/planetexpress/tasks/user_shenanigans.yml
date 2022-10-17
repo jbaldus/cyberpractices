@@ -71,3 +71,14 @@
     dest: /home/scruffy/
     owner: scruffy
     group: scruffy
+
+- name: Allow root login
+  user:
+    name: root
+    password: $y$j9T$tpAzX9.2aMXjAjegvTJQv1$jDOPf/kgU.OLYFEHP6DyiiP6HeLhwyHFSOf7qOMrTe/
+
+- name: Allow root to login to ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: ^#?.*?PermitRootLogin.*?$
+    line: PermitRootLogin yes
