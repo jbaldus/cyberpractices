@@ -1,0 +1,9 @@
+[Unit]
+Description=Runs the scoring program DO NOT DISABLE!
+
+[Timer]
+OnUnitActiveSec=30s
+OnBootSec=30s
+
+[Install]
+WantedBy=timers.target

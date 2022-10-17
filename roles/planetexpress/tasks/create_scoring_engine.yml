@@ -1,14 +1,9 @@
 ---
-- name: Create ScoringEngine Directory
-  file:
-    path: /opt/ScoringEngine
-    state: directory
-
-- name: Copy Scoring script
+- name: Copy ScoringEngine Directory
   copy:
-    src: score.py
-    dest: /opt/ScoringEngine
-
+    src: opt/ScoringEngine
+    dest: ScoringEngine
+  
 - name: Copy score command
   copy:
     src: score
@@ -43,3 +38,26 @@
     group: "{{ competitor }}"
   loop:
     - Forensics Question 1.txt
+
+- name: Copy Link to Scoring Report
+  file:
+    path: /home/{{ competitor }}/Desktop/ScoringReport.desktop
+    src: /opt/ScoringEngine/ScoringReport.desktop
+    state: link
+
+- name: Copy Scoring service files
+  copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system
+  loop:
+    - pe-score.service
+    - pe-score.timer
+
+- name: Enable the scoring service
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - pe-score.service
+    - pe-score.timer

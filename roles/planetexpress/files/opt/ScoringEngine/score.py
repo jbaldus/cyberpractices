@@ -7,7 +7,11 @@ import os
 import pwd
 import re
 import shlex
+import shutil
 import subprocess
+import pickle
+import jinja2
+from pathlib import Path
 from collections import namedtuple
 from types import SimpleNamespace as _
 
@@ -22,11 +26,14 @@ def bold(text):
 
 def run(command, is_shell=False):
     """Runs a shell command and returns the stdout response"""
-    return subprocess.run(shlex.split(command),
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE,
-                          shell=is_shell,
-                          ).stdout.decode('utf-8')
+    result = subprocess.run(shlex.split(command),
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            shell=is_shell,
+                            )
+    result.stdout = result.stdout.decode('utf-8')
+    result.stderr = result.stderr.decode('utf-8')
+    return result.stdout.strip()
 
 def password_status(user):
     PasswordStatus = namedtuple('PasswordStatus', 
@@ -43,20 +50,21 @@ def password_status(user):
     ps = PasswordStatus(*output)    
     return ps
 
-# def get_apt_repositories():
-#     AptSource = namedtuple('AptSource', [type, uri, suite, component])
-#     sources_files = glob.glob("/etc/apt/**/*.list", recursive=True)
-#     sources = []
-#     for source_file in source_files:
-#         with open(source_file) as f:
-#             line = f.readline().strip()
-#             if re.match(r'^\s*#', line):
-#                 continue
-#             type, uri, suite, components = line.split(' ', 3)
-#             components = components.split(' ')
-#             for component in components:
-#                 sources.append(AptSource(type, uri, suite, component))
-#     return sources
+def get_apt_repositories():
+    AptSource = namedtuple('AptSource', [type, uri, suite, component])
+    sources_files = glob.glob("/etc/apt/sources.list.d/*.list", recursive=True)
+    sources_files.append("/etc/apt/sources.list")
+    sources = []
+    for source_file in source_files:
+        with open(source_file) as f:
+            line = f.readline().strip()
+            if re.match(r'^\s*#', line):
+                continue
+            type, uri, suite, components = line.split(' ', 3)
+            components = components.split(' ')
+            for component in components:
+                sources.append(AptSource(type, uri, suite, component))
+    return sources
 
 
 def get_file_md5(filename):
@@ -99,8 +107,19 @@ def is_media_files_deleted(directory, filetype):
     return len(files) == 0
 
 def is_program_installed(program):
-    which = run(f"which {program}")
-    return which.strip() != ''
+    return shutil.which(program) is not None
+
+def which(command):
+    split_command = shlex.split(command)
+    cmd = split_command[0]
+    resolved_cmd = shutil.which(cmd)
+    if resolved_cmd is None:
+        return None
+    args = " ".join(split_command[1:])
+    return f"{resolved_cmd} {args}"
+
+def is_one_of_program_installed(*programs):
+    return any(map(is_program_installed, programs))
 
 def is_guest_session_disabled():
     config_line = run("grep allow-guest /etc/lightdm/lightdm.conf.d/*")
@@ -186,6 +205,7 @@ class Task:
             self.args = arguments
         self.success = success
         self.description = description
+        self.passed = None
         
     def check(self):
         global score
@@ -195,12 +215,58 @@ class Task:
         else:
             value = (self.function(*self.args) == self.success)
         if value:
-            score += self.points
-            found_items += 1
-            print(f"{s.bold}{self.points} points{s.reset} {self.description}")
+            self.passed = True
+            # score += self.points
+            # found_items += 1
+            # print(f"{s.bold}{self.points} points{s.reset} {self.description}")
+        else:
+            self.passed = False
+
+class TestSuite:
+    def __init__(self, tasks):
+        self.tasks = tasks 
+        self.score = 0
+        self.completion = 0
+        self.total_possible = sum(t.points for t in self.tasks)
 
 
-points = [
+    def check_all(self):
+        for task in self.tasks:
+            task.check()
+        self.score = 0
+        for task in self.tasks:
+            if task.passed is None:
+                task.check()
+            if task.passed:
+                self.score += task.points
+        return self.score
+
+    @property
+    def solved(self):
+        return len(task for task in self.tasks if task.passed == True)
+    
+
+    def __iter__(self):
+        if self.tasks is None:
+            raise StopIteration
+        return (task for task in self.tasks)
+    
+
+    def __len__(self):
+        if self.tasks is None:
+            return 0
+        return len(self.tasks)
+
+
+    def __getitem__(self, index):
+        return self.tasks[index]
+
+    
+    def __str__(self):
+        return f"You have found {self.solved} out of {len(self)} for a score of {self.score}."
+
+
+tasks = [
     #Points, function, arguments, truth, description
     Task(is_root_login_disabled, None, True, "Disabled root user login."),
     Task(is_root_ssh_login_disabled, None, True, "Disallowed root from login in through ssh."),
@@ -214,7 +280,7 @@ points = [
     Task(is_user_in_admin, "leela", True, "Added leela to Administrators."),
     Task(is_media_files_deleted, ["/home/scruffy/Pictures", "*"], True, "Removed unauthorized media files from user scruffy."),
     Task(is_service, "auditd", True, "Installed and enabled auditd service."),
-    Task(is_file_md5_equal, ["/usr/bin/firefox", "42b33a4578e4a51d8a5d1010c466a9d7"], False, "Updated Firefox"),
+    Task(is_file_md5_equal, [which("firefox"), "42b33a4578e4a51d8a5d1010c466a9d7"], False, "Updated Firefox"),
     Task(is_removed_service, "xrdp", True, "Stopped and disabled Remote Desktop Protocol service."),
     Task(is_program_installed, "aircrack-ng", False, "Removed hacking tool aircrack-ng."),
     Task(is_program_installed, "nmap", False, "Removed hacking tool nmap."),
@@ -227,21 +293,41 @@ points = [
     ]
     
 
+points = TestSuite(tasks)
+
 if __name__ == "__main__":
-    if pwd.getpwuid( os.getuid() ).pw_name != 'root':
-        print("""Since the scoring software needs to access system configurations,
-                it must be run with elevated privileges. Try again with 'sudo'.
-            """)
-        exit()
+    # Check if pickled points file exists. If it does, un-pickle it and save it as an old value.
+    os.makedirs('/var/score/', mode=0755, exist_ok=True)
+    pickle_file = Path('/var/score/points')
+    if pickle_file.exists():
+        old_points = pickle.load(open(picklefile))
+    points.check_all()
+    if points.score > old_points.score:
+        ... # Notify points gained
+    # Now save for the next time
+    pickle.dump(points, open(pickle_file, 'w'))
+
+    # Generate scoring report
+    template = Template(open("/opt/ScoringEngine/ScoreingReport.html.j2").read())
+    page = template.render(points=points)
+    with open("/opt/ScoringEngine/ScoringReport.html", "w") as f:
+        f.write(page)
     
-    print("")
-    total_possible_points = 0
-    score = 0
-    found_items = 0
-    for point in points:
-        total_possible_points += point.points
-        point.check()
+    
+    # if pwd.getpwuid( os.getuid() ).pw_name != 'root':
+    #     print("""Since the scoring software needs to access system configurations,
+    #             it must be run with elevated privileges. Try again with 'sudo'.
+    #         """)
+    #     exit()
+    
+    # print("")
+    # total_possible_points = 0
+    # score = 0
+    # found_items = 0
+    # for point in points:
+    #     total_possible_points += point.points
+    #     point.check()
         
-    print(f"\nYou have found {bold(found_items)} out of {bold(len(points))}, \nearning {bold(f'{score} points out of {total_possible_points} points')}.")
+    # print(f"\nYou have found {bold(found_items)} out of {bold(len(points))}, \nearning {bold(f'{score} points out of {total_possible_points} points')}.")
     
 

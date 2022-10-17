@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Scoring Report
+Type=Application
+Exec=x-www-browser "file:///opt/ScoringEngine/ScoringReport.html"
+Icon=/opt/ScoringEngine/Icon.png
