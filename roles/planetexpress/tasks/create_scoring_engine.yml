@@ -48,6 +48,7 @@
     path: /home/{{ competitor }}/Desktop/ScoringReport.desktop
     src: /opt/ScoringEngine/ScoringReport.desktop
     state: link
+    force: yes
 
 - name: Copy Scoring service files
   copy:
