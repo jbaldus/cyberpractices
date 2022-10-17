@@ -112,7 +112,7 @@ CyberPatriot Score Upload Status: <span style="color:green">OK</span> <br>
 <p>
 
 </p>
-<h3>{{ points.solved }} out of {{ points.__len__() }} scored security issues fixed, for a gain of {{ points.score }} points:</h3>
+<h3>{{ points.solved }} out of {{ points|length }} scored security issues fixed, for a gain of {{ points.score }} points:</h3>
 <p>
 {% for point in points %}
 {{ point.description }} - {{ point.points }} pts<br>
