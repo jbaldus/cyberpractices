@@ -1,3 +1,5 @@
+#Restart networking
+d-i preseed/early_command string kill-all-dhcp; netcfg;
 #### Localization
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
@@ -15,8 +17,7 @@ d-i time/zone string America/New_York
 ##### User Creation
 # Skip creation of a root account (normal user account will be able to
 # use sudo).
-d-i passwd/root-login boolean true
-d-i passwd/root-password-crypted password $y$j9T$nqFnsoziWqD9dZv2DeXme0$KYVqOqHuJYo4yYjvUFMRdZ2hynmjAkld9b9tsOXgDf0
+d-i passwd/root-login boolean false
 # To create a normal user account.
 d-i passwd/user-fullname string Architect
 d-i passwd/username string architect
@@ -53,9 +54,7 @@ d-i grub-installer/only_debian boolean true
 d-i grub-installer/bootdev string /dev/sda
 
 ubiquity ubiquity/success_command string\
-    in-target bash -c "apt-get install openssh-server";\
-    in-target bash -c "sed -i 's/^.*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config";\
-    in-target bash -c "touch /etc/.success_command";\
-    in-target bash -c "systemctl restart ssh";\
-    in-target bash -c "apt-get install git ansible";\
-    in-target bash -c "ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /tmp/cyberpractices -i /tmp/cyberpractices/hosts /tmp/cyberpractices/local.yml | tee -a /var/log/cyberpractices.log";
+    apt-install git ansible;\
+    in-target bash -c "apt-get install -y git ansible > /var/log/installer/apt-get-install.log"; \
+    in-target bash -c "ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /mnt/cyberpractices -i /mnt/cyberpractices/hosts /mnt/cyberpractices/local.yml | tee -a /var/log/cyberpractices.log"; \
+    in-target bash -c "touch /etc/.success_command";
