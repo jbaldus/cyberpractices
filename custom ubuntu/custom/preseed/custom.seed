@@ -57,4 +57,8 @@ ubiquity ubiquity/success_command string\
     apt-install git ansible;\
     in-target bash -c "apt-get install -y git ansible > /var/log/installer/apt-get-install.log"; \
     in-target bash -c "ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /mnt/cyberpractices -i /mnt/cyberpractices/hosts /mnt/cyberpractices/local.yml | tee -a /var/log/cyberpractices.log"; \
-    in-target bash -c "touch /etc/.success_command";
+    in-target bash -c "echo ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /mnt/cyberpractices -i /mnt/cyberpractices/hosts /mnt/cyberpractices/local.yml >> /var/log/cyberpractices.log"; \
+    in-target bash -c "touch /etc/.success_command";\
+    in-target bash -c "apt-get remove --autoremove git ansible -y > /var/log/installer/apt-get-remove.log"; \
+    in-target bash -c "apt-get clean"; \
+    in-target bash -c "rm -rf /mnt/cyberpractices";
