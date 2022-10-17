@@ -257,7 +257,7 @@ class TestSuite:
         return f"You have found {self.solved} out of {len(self)} for a score of {self.score}."
 
 # Do first-time tasks
-os.makedirs('/var/score/', mode=0755, exist_ok=True)
+os.makedirs('/var/score/', mode=0o755, exist_ok=True)
 first_time_file = Path("/var/score/first-time")
 first_time_data = {}
 if first_time_file.exists():
