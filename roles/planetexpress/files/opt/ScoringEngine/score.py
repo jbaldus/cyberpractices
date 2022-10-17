@@ -209,7 +209,7 @@ class Task:
             self.passed = True
             # score += self.points
             # found_items += 1
-            # print(f"{s.bold}{self.points} points{s.reset} {self.description}")
+            print(f"{self.points} points - {self.description}")
         else:
             self.passed = False
 
