@@ -1,9 +1,12 @@
 ---
-- debug:
-    msg: "{{ item.name }}"
-  loop: "{{ users }}"
+- name: Get name of user with uid 1000
+  command: id {{ competitor }}
+  register: competitor_exists
+  changed_when: False
+  ignore_errors: yes
 
 - name: Make Competitor the Main User
+  when: competitor_exists.rc != 0
   block:
     - name: rename architect to {{ competitor }}
       command: usermod -l {{ competitor }} architect
