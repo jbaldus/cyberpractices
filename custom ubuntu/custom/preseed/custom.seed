@@ -62,3 +62,5 @@ ubiquity ubiquity/success_command string\
     in-target bash -c "apt-get remove --autoremove git ansible -y > /var/log/installer/apt-get-remove.log"; \
     in-target bash -c "apt-get clean"; \
     in-target bash -c "rm -rf /mnt/cyberpractices";
+
+ubiquity ubiquity/reboot boolean true
