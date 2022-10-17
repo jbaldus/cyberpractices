@@ -76,7 +76,7 @@ body {
 <div class="text">
 <div class="binary" data-binary="0100 0010 00001001 10010100">
 <p align=center style="width:100%;text-align:center"><img align=middle style="float:middle" src="image001.png"></p>
-<h1>Training Round Ubuntu 16 Competition Image</h1>
+<h1>Training Round Ubuntu 22 Competition Image</h1>
 <h2>Report Generated At: {{ now.strftime("%Y/%m/%d %-H:%M:%S") }}</h2>
 
 
@@ -95,12 +95,12 @@ if ( gendate > 0 && diff > 1000 * 60 * 5 ) {
 	document.write('<span style="color:red"><h2>WARNING: CCS Scoring service may not be running</h2></span>');
 }
 </script>
-<h3 class="center">Approximate Image Running Time: 191:15:44</h3>
+<!--<h3 class="center">Approximate Image Running Time: 191:15:44</h3>
 <h3 class="center">Approximate Team Running Time: 383:47:50</h3>
 <h3 class="center">Current Team ID: <span style="color:green">AKKV-56VN-4P78</span></h3>
+-->
 
-
-<h2>100 out of 100 points received</h2>
+<h2>{{ points.score }} out of {{ points.total_possible }} points received</h2>
 <p><p>
 <h3>Connection Status: <span style="color:green">Scoring Data Uploaded Successfully: No Errors Detected</span></h3>
 <p>

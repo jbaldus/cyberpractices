@@ -49,6 +49,13 @@
     src: /opt/ScoringEngine/ScoringReport.desktop
     state: link
     force: yes
+    owner: "{{ competitor }}"
+    group: "{{ competitor }}"
+
+- name: Set permissions on Scoring Report
+  file:
+    path: /opt/ScoringEngine/ScoringReport.desktop
+    mode: +x
 
 - name: Copy Scoring service files
   copy:

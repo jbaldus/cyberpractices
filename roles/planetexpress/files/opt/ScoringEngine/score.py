@@ -264,11 +264,11 @@ class TestSuite:
 os.makedirs('/var/score/', mode=0o755, exist_ok=True)
 first_time_file = Path("/var/score/first-time")
 first_time_data = {}
-if first_time_file.exists():
+try:
     first_time_data = pickle.load(first_time_file.open('rb'))
-else:
+except:
     first_time_data['firefox_md5'] = get_file_md5(which("firefox"))
-    pickle.dump(first_time_file.open('wb'))
+    pickle.dump(first_time_data, first_time_file.open('wb'))
 
 
 tasks = [
