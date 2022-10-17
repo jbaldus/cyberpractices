@@ -3,7 +3,7 @@ Description=Runs the scoring program DO NOT DISABLE
 
 [Service]
 Type=oneshot
-ExecStart=python3 /opt/ScoringEngine/score.python3
+ExecStart=python3 /opt/ScoringEngine/score.py
 
 [Install]
 WantedBy=multi-user.target

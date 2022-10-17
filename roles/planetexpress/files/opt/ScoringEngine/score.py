@@ -107,7 +107,7 @@ def which(command):
     if resolved_cmd is None:
         return None
     args = " ".join(split_command[1:])
-    return f"{resolved_cmd} {args}"
+    return f"{resolved_cmd} {args}".strio()
 
 def is_one_of_program_installed(*programs):
     return any(map(is_program_installed, programs))
@@ -261,10 +261,10 @@ os.makedirs('/var/score/', mode=0755, exist_ok=True)
 first_time_file = Path("/var/score/first-time")
 first_time_data = {}
 if first_time_file.exists():
-    first_time_data = pickle.load(first_time_file.open())
+    first_time_data = pickle.load(first_time_file.open('rb'))
 else:
     first_time_data['firefox_md5'] = get_file_md5(which("firefox"))
-    pickle.dump(first_time_file.open('w'))
+    pickle.dump(first_time_file.open('wb'))
 
 
 tasks = [
@@ -300,16 +300,16 @@ if __name__ == "__main__":
     # Check if pickled points file exists. If it does, un-pickle it and save it as an old value.
     pickle_file = Path('/var/score/points')
     if pickle_file.exists():
-        old_points = pickle.load(open(picklefile))
+        old_points = pickle.load(open(pickle_file, 'rb'))
     points.check_all()
-    if points.score > old_points.score:
-        ... # Notify points gained
+    # if points.score > old_points.score:
+    #     ... # Notify points gained
     # Now save for the next time
-    pickle.dump(points, open(pickle_file, 'w'))
+    pickle.dump(points, open(pickle_file, 'wb'))
 
     # Generate scoring report
-    template = Template(open("/opt/ScoringEngine/ScoreingReport.html.j2").read())
-    page = template.render(points=points)
+    template = Template(open("/opt/ScoringEngine/ScoringReport.html.j2").read())
+    page = template.render(points=points, now=datetime.now())
     with open("/opt/ScoringEngine/ScoringReport.html", "w") as f:
         f.write(page)
     

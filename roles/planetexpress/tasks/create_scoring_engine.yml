@@ -6,7 +6,7 @@
 - name: Copy ScoringEngine Directory
   copy:
     src: opt/ScoringEngine
-    dest: /opt/ScoringEngine
+    dest: /opt/
   
 - name: Copy score command
   copy:
