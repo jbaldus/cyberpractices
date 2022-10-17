@@ -234,7 +234,7 @@ class TestSuite:
 
     @property
     def solved(self):
-        return len(task for task in self.tasks if task.passed == True)
+        return len([task for task in self.tasks if task.passed == True])
     
 
     def __iter__(self):
