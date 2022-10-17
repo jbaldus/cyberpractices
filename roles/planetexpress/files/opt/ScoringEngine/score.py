@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from datetime import datetime
+import datetime
 import glob
 import hashlib
 import os
@@ -309,7 +309,7 @@ if __name__ == "__main__":
 
     # Generate scoring report
     template = Template(open("/opt/ScoringEngine/ScoringReport.html.j2").read())
-    page = template.render(points=points, now=datetime.now())
+    page = template.render(points=points, now=datetime.datetime.now())
     with open("/opt/ScoringEngine/ScoringReport.html", "w") as f:
         f.write(page)
     
