@@ -107,7 +107,7 @@ def which(command):
     if resolved_cmd is None:
         return None
     args = " ".join(split_command[1:])
-    return f"{resolved_cmd} {args}".strio()
+    return f"{resolved_cmd} {args}".strip()
 
 def is_one_of_program_installed(*programs):
     return any(map(is_program_installed, programs))
