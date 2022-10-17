@@ -1,4 +1,8 @@
 ---
+- name: Install Jinja
+  apt:
+    name: python3-jinja2
+
 - name: Copy ScoringEngine Directory
   copy:
     src: opt/ScoringEngine
@@ -61,3 +65,4 @@
   loop:
     - pe-score.service
     - pe-score.timer
+

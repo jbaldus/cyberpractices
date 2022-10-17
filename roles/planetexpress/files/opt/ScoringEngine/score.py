@@ -10,19 +10,10 @@ import shlex
 import shutil
 import subprocess
 import pickle
-import jinja2
+from jinja2 import Template
 from pathlib import Path
 from collections import namedtuple
-from types import SimpleNamespace as _
 
-# Set up a method for easily formatting output: To use, simply print a format 
-# string and surround the text you want to be bold with {s.bold} and {s.reset}
-from colorama import Fore, Style
-
-s = _(bold = Style.BRIGHT+Fore.YELLOW, reset = Style.RESET_ALL )
-
-def bold(text):
-    return f"{s.bold}{text}{s.reset}"
 
 def run(command, is_shell=False):
     """Runs a shell command and returns the stdout response"""
@@ -265,6 +256,16 @@ class TestSuite:
     def __str__(self):
         return f"You have found {self.solved} out of {len(self)} for a score of {self.score}."
 
+# Do first-time tasks
+os.makedirs('/var/score/', mode=0755, exist_ok=True)
+first_time_file = Path("/var/score/first-time")
+first_time_data = {}
+if first_time_file.exists():
+    first_time_data = pickle.load(first_time_file.open())
+else:
+    first_time_data['firefox_md5'] = get_file_md5(which("firefox"))
+    pickle.dump(first_time_file.open('w'))
+
 
 tasks = [
     #Points, function, arguments, truth, description
@@ -280,7 +281,7 @@ tasks = [
     Task(is_user_in_admin, "leela", True, "Added leela to Administrators."),
     Task(is_media_files_deleted, ["/home/scruffy/Pictures", "*"], True, "Removed unauthorized media files from user scruffy."),
     Task(is_service, "auditd", True, "Installed and enabled auditd service."),
-    Task(is_file_md5_equal, [which("firefox"), "42b33a4578e4a51d8a5d1010c466a9d7"], False, "Updated Firefox"),
+    Task(is_file_md5_equal, [which("firefox"), first_time_data['firefox_md5']], False, "Updated Firefox"),
     Task(is_removed_service, "xrdp", True, "Stopped and disabled Remote Desktop Protocol service."),
     Task(is_program_installed, "aircrack-ng", False, "Removed hacking tool aircrack-ng."),
     Task(is_program_installed, "nmap", False, "Removed hacking tool nmap."),
@@ -297,7 +298,6 @@ points = TestSuite(tasks)
 
 if __name__ == "__main__":
     # Check if pickled points file exists. If it does, un-pickle it and save it as an old value.
-    os.makedirs('/var/score/', mode=0755, exist_ok=True)
     pickle_file = Path('/var/score/points')
     if pickle_file.exists():
         old_points = pickle.load(open(picklefile))
