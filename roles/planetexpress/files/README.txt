@@ -11,11 +11,6 @@ elevated privileges, they should use sudo.
 Users should be using the latest stable version of Firefox for their web browser. Administrators need to be able to log in 
 to the computer using SSH, but any other remote access should be disallowed. Any hacking tools you find should be removed.
 
-!!!IMPORTANT!!!
-There isn't a scoring server for this image like in Cyberpatriots, but you can find your score at any time by running the 
-command "score" in a terminal. Since the scoring script needs to access system configurations, you may be asked to provide
-a password so it can elevate its privileges.
-
 
 Users
 ===============
