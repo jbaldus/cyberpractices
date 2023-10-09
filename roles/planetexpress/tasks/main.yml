@@ -11,6 +11,12 @@
     name: ssh
     enabled: yes
 
+- name: copy background.png
+  copy:
+    src: background.png
+    dest: /usr/share/backgrounds
+
+
 - import_tasks: create_users.yml
 - import_tasks: install_hacking_tools.yml
 - import_tasks: misconfigure_services.yml

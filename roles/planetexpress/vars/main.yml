@@ -25,7 +25,7 @@ users:
   
   - name: hermes
     clear_pw: L!mB0RoX
-    password: $6$YX0BdZfKd32O/YfE$mxDjAO4HZZrZxQAePrx8MwxCEGmC2qjbpppzyILZqnyXJeo3yW3gfCZ4YqV7cX8Dw79GBzRT4aXAaAoXmelPp0
+    password: $y$j9T$0UTPk8my5XOHc7mkO6ZNM0$sq47bJM07J7/ZOtg8K80IhTp3UidaoHFOyZ1LZ5dXpA
     comment: Hermes Conrad, Bureaucrat 
     groups: sudo
   
