@@ -54,16 +54,12 @@ d-i grub-installer/only_debian boolean true
 d-i grub-installer/bootdev string /dev/sda
 
 ubiquity ubiquity/success_command string\
-    apt-install git ansible;\
-    in-target bash -c "wget https://10.13.1.100/ckroot/ckroot.crt --no-check-certificate -O /usr/share/ca-certificates/ckroot.crt"; \
-    in-target bash -c "wget http://mr.baldus.rocks/blocksi.crt -O /usr/share/ca-certificates/blocksi.crt"; \
-    in-target bash -c "echo ckroot.crt >> /etc/ca-certificates.conf"; \
-    in-target bash -c "echo blocksi.crt >> /etc/ca-certificates.conf"; \
+    mkdir -p /target/usr/local/share/ca-certificates/extra; \
+    test -e /cdrom/certs && cp /cdrom/certs/*.crt /target/usr/local/share/ca-certificates/extra/; \
     in-target bash -c "update-ca-certificates"; \
     in-target bash -c "apt-get install -y git ansible > /var/log/installer/apt-get-install.log"; \
     in-target bash -c "ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /mnt/cyberpractices -i /mnt/cyberpractices/hosts /mnt/cyberpractices/local.yml | tee -a /var/log/cyberpractices.log"; \
-    in-target bash -c "echo ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /mnt/cyberpractices -i /mnt/cyberpractices/hosts /mnt/cyberpractices/local.yml >> /var/log/cyberpractices.log"; \
-    in-target bash -c "touch /etc/.success_command";\
+    in-target bash -c "echo ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /mnt/cyberpractices -i /mnt/cyberpractices/hosts /mnt/cyberpractices/local.yml >> /var/log/installer/cyberpractices.log"; \
     in-target bash -c "apt-get remove --autoremove git ansible -y > /var/log/installer/apt-get-remove.log"; \
     in-target bash -c "apt-get clean"; \
     in-target bash -c "rm -rf /mnt/cyberpractices";
