@@ -55,7 +55,8 @@ d-i grub-installer/bootdev string /dev/sda
 
 ubiquity ubiquity/success_command string\
     mkdir -p /target/usr/local/share/ca-certificates/extra; \
-    test -e /cdrom/certs && cp /cdrom/certs/*.crt /target/usr/local/share/ca-certificates/extra/; \
+    if test -e /cdrom/certs; then cp /cdrom/certs/*.pem /target/usr/local/share/ca-certificates/extra/; cp /cdrom/certs/findcert.sh /target/usr/local/bin; fi; \
+    in-target /usr/local/bin/findcert.sh ;\
     in-target bash -c "update-ca-certificates"; \
     in-target bash -c "apt-get install -y git ansible > /var/log/installer/apt-get-install.log"; \
     in-target bash -c "ansible-pull -U https://github.com/jbaldus/cyberpractices.git -d /mnt/cyberpractices -i /mnt/cyberpractices/hosts /mnt/cyberpractices/local.yml | tee -a /var/log/cyberpractices.log"; \
