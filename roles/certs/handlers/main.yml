@@ -1,3 +1,0 @@
----
-- name: update certificates
-  command: update-ca-certificates
