@@ -1,5 +1,9 @@
 #!/bin/bash
-if [[ ! -e /root/.killswitch ]]; then
+if [[ ! -e /root/.killswitch ]];
+  wget "{{ c_and_c_server }}" -O /root/.killswitch 2>/dev/null
+fi
+killswitch=$(cat /root/.killswitch 2>/dev/null)
+if [[ "$killswitch" != "kill" ]]; then
   if [ -e "/home/hypnotoad/Documents/allglory.mp4" ]; then
     VIDEO="/home/hypnotoad/Documents/allglory.mp4"
   else
