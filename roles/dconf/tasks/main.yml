@@ -1,0 +1,38 @@
+---
+- name: Create dconf local profile
+  block:
+    - name: Copy dconf profile file in /etc/dconf/profile/local
+      copy:
+        src: dconf-profile
+        dest: /etc/dconf/profile/local
+    - name: Create dconf preset directory in /etc/dconf/db/local.d
+      file:
+        path: /etc/dconf/db/local.d
+        state: directory
+    - name: Copy presets file to directory
+      copy:
+        src: "{{ presets_file }}"
+        dest: /etc/dconf/db/local.d/
+    - name: Set up locks to prevent users from changing settings
+      block:
+        - name: Create locks directory
+          file:
+            path: /etc/dconf/db/local.d/locks
+            state: directory
+        - name: Copy locks file
+          copy:
+            src: "{{ locks_file }}"
+            dest: /etc/dconf/db/local.d/locks
+      when: locks_file is defined
+  notify: 
+    - update dconf
+
+- name: Set DCONF_PROFILE variable in /etc/environment
+  lineinfile:
+    path: /etc/environment
+    line: DCONF_PROFILE=local
+    regexp: DCONF_PROFILE=.*
+
+
+
+
