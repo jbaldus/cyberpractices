@@ -3,7 +3,7 @@
 # Setup System
 - include_role:
     name: firefox
-    
+
 - name: Install software
   apt:
     name: openssh-server
@@ -20,6 +20,12 @@
 - name: Set default dconf configuration
   include_role:
     name: dconf
+
+- name: Don't show first start thing
+  lineinfile:
+    path: /home/bender/.config/gnome-initial-setup
+    line: yes
+    create: yes
 
 - import_tasks: create_users.yml
 - import_tasks: install_hacking_tools.yml
