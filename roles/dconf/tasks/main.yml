@@ -24,8 +24,9 @@
             src: "{{ locks_file }}"
             dest: /etc/dconf/db/local.d/locks
       when: locks_file is defined
-  notify: 
-    - update dconf
+      
+- name: update dconf
+  command: dconf update
 
 - name: Set DCONF_PROFILE variable in /etc/environment
   lineinfile:
