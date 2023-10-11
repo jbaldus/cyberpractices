@@ -6,6 +6,7 @@ TESTURL=https://wikipedia.com
 UPDATECERTSCOMMAND=update-ca-certificates
 verbose=0
 fresh=0
+update=0
 
 while [ $# -gt 0 ];
 do
@@ -14,6 +15,8 @@ do
       verbose=1;;
     --fresh|-f)
       fresh=1;;
+    --update|-u)
+      update=1;;
     --localcertsdir)
       shift
       LOCALCERTSDIR="$1";;
@@ -30,17 +33,25 @@ do
   shift
 done
 
-cd "$LOCALCERTSDIR"
+function log() {
+    test "$verbose" = 1 && eval $@
+}
 
-for cert in "${LOCALCERTSDIR}"/lab*.pem;
+for cert in lab*.pem;
 do
+  log echo -n "Testing cert: $cert ..."
   if wget ${TESTURL} --ca-certificate="${cert}" -q -O /dev/null; 
   then
-    cp "$i" "${i%.pem}.crt"
-    if test $fresh -eq 1; then
+    log echo "Success!"
+    log echo "Copying $cert to ${LOCALCERTSDIR}/${cert%.pem}.crt"
+    cp "$cert" "${LOCALCERTSDIR}/${cert%.pem}.crt"
+    if [ "$fresh" = 1 ]; then
+      log echo "Clearing ${ETCCERTSDIR}."
       find "$ETCCERTSDIR" -type l -exec rm {} \;
     fi
-    `$UPDATECERTSCOMMAND`
+    test $update -eq 1 && eval $UPDATECERTSCOMMAND
     break
+  else
+    log echo "Nope."
   fi
 done
