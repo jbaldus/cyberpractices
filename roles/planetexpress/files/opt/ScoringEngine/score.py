@@ -314,9 +314,9 @@ if __name__ == "__main__":
     # Generate scoring report
     template = Template(open("/opt/ScoringEngine/ScoringReport.html.j2").read())
     page = template.render(points=points, now=datetime.datetime.now())
-    with open("/opt/ScoringEngine/ScoringReport.html", "w") as f:
+    with open("/home/bender/ScoringReport.html", "w") as f:
         f.write(page)
-    
+    run("chown bender:bender /home/bender/ScoringReport.html")
     
     # if pwd.getpwuid( os.getuid() ).pw_name != 'root':
     #     print("""Since the scoring software needs to access system configurations,

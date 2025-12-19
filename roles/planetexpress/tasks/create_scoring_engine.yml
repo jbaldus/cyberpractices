@@ -53,9 +53,14 @@
     group: "{{ competitor }}"
 
 - name: Set permissions on Scoring Report
-  file:
-    path: /opt/ScoringEngine/ScoringReport.desktop
-    mode: +x
+  block:
+    - name: Set execute
+      file:
+        path: /opt/ScoringEngine/ScoringReport.desktop
+        mode: +x
+    - name: Mark as trusted for Gnome
+      shell:
+        cmd: gio set /home/{{ competitor }}/Desktop/ScoringReport.desktop metadata::trusted true
 
 - name: Copy Scoring service files
   copy:

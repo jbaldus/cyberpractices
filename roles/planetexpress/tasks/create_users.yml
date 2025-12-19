@@ -9,9 +9,7 @@
   when: competitor_exists.rc != 0
   block:
     - name: rename architect to {{ competitor }}
-      command: usermod -l {{ competitor }} architect
-    - name: set {{ competitor }}'s home directory
-      command: usermod -d /home/{{ competitor }} {{ competitor }}
+      command: usermod -l {{ competitor }} -d /home/{{ competitor }} -m architect
     - name: rename {{ competitor }}'s primary group
       command: groupmod -n {{ competitor }} architect
     - name: fix some configuration files
